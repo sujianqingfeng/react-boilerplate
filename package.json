@@ -10,6 +10,7 @@
 		"typecheck": "tsc"
 	},
 	"dependencies": {
+		"@ant-design/icons": "^5.3.7",
 		"@remix-run/node": "^2.9.2",
 		"@remix-run/react": "^2.9.2",
 		"@sujian/request": "^2.0.7",

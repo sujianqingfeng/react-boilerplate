@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@ant-design/icons':
+    specifier: ^5.3.7
+    version: 5.3.7(react-dom@18.3.1)(react@18.3.1)
   '@remix-run/node':
     specifier: ^2.9.2
     version: 2.9.2(typescript@5.4.5)
@@ -20,9 +23,6 @@ dependencies:
   antd:
     specifier: ^5.17.3
     version: 5.17.3(react-dom@18.3.1)(react@18.3.1)
-  lucide:
-    specifier: ^0.378.0
-    version: 0.378.0
   lucide-react:
     specifier: ^0.378.0
     version: 0.378.0(react@18.3.1)
@@ -3256,10 +3256,6 @@ packages:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0
     dependencies:
       react: 18.3.1
-    dev: false
-
-  /lucide@0.378.0:
-    resolution: {integrity: sha512-bwWXuZf2jZbCI0Y+MWyv5bedWIxYKtgAEzC2Yl87Nrt/KcG9qTwAQxVFcZ6IwBioML06QUQsG+qRjyQvYHdbBQ==}
     dev: false
 
   /markdown-extensions@1.1.1:
