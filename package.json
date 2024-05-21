@@ -6,7 +6,6 @@
 	"scripts": {
 		"build": "remix vite:build",
 		"dev": "remix vite:dev",
-		"lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
 		"preview": "vite preview",
 		"typecheck": "tsc"
 	},
@@ -16,6 +15,7 @@
 		"@sujian/request": "^2.0.7",
 		"@tanstack/react-query": "^5.37.1",
 		"antd": "^5.17.3",
+		"lucide-react": "^0.378.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0"
 	},

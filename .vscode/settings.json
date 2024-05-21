@@ -21,5 +21,12 @@
 	"editor.codeActionsOnSave": {
 		"quickfix.biome": "explicit"
 	},
-	"cSpell.words": ["tailwindcss", "tanstack"]
+	"cSpell.words": [
+		"antd",
+		"biomejs",
+		"lucide",
+		"sujian",
+		"tailwindcss",
+		"tanstack"
+	]
 }
