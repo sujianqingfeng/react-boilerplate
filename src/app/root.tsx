@@ -1,11 +1,5 @@
-import {
-	Links,
-	Meta,
-	Outlet,
-	Scripts,
-	ScrollRestoration,
-} from '@remix-run/react'
-import stylesheet from '~/tailwind.css?url'
+import { Links, Outlet, Scripts } from '@remix-run/react'
+import stylesheet from './tailwind.css?url'
 import type { LinksFunction } from '@remix-run/node'
 
 export const links: LinksFunction = () => [
@@ -29,4 +23,8 @@ export default function Component() {
 			<Scripts />
 		</>
 	)
+}
+
+export function ErrorBoundary() {
+	return <h1>Unknown Error</h1>
 }

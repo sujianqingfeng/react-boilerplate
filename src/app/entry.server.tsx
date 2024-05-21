@@ -12,7 +12,7 @@ export default function handleRequest(
 	remixContext: EntryContext,
 ) {
 	const shellHtml = fs
-		.readFileSync(path.join(process.cwd(), 'app/index.html'))
+		.readFileSync(path.join(process.cwd(), 'src/app/index.html'))
 		.toString()
 
 	const appHtml = renderToString(
