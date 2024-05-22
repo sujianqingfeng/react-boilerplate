@@ -1,28 +1,32 @@
-import { Button, Layout } from 'antd'
-import { useState, type ReactNode } from 'react'
-import * as AntIcons from '@ant-design/icons'
+import { Layout } from 'antd'
+import type { ReactNode } from 'react'
+import { useLayout } from '~/hooks/use-layout'
+import { TheHeader } from '../ui/the-header'
+import { TheFooter } from '../ui/the-footer'
+import { TheNav } from '../ui/the-nav'
 
 const { Header, Footer, Sider, Content } = Layout
-const { MenuFoldOutlined, MenuUnfoldOutlined } = AntIcons
 
 export function DefaultLayout({ children }: { children: ReactNode }) {
-	const [collapsed, setCollapsed] = useState(false)
+	const { collapsed, toggleCollapsed } = useLayout()
 
 	return (
 		<Layout className="h-full">
-			<Sider trigger={null} collapsible collapsed={collapsed}>
-				Sider
+			<Sider theme="light" trigger={null} collapsible collapsed={collapsed}>
+				<TheNav collapsed={collapsed} />
 			</Sider>
 			<Layout>
-				<Header className="bg-white p-0">
-					<Button
-						type="text"
-						icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-						onClick={() => setCollapsed(!collapsed)}
-					/>
+				<Header className="bg-white px-0 h-12">
+					<TheHeader collapsed={collapsed} toggleCollapsed={toggleCollapsed} />
 				</Header>
-				<Content>{children}</Content>
-				<Footer>Footer</Footer>
+				<Content>
+					<div className="p-4 h-full">
+						<div className="bg-white h-full rounded-md">{children}</div>
+					</div>
+				</Content>
+				<Footer className="p-0">
+					<TheFooter />
+				</Footer>
 			</Layout>
 		</Layout>
 	)
