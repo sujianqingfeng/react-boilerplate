@@ -1,30 +1,8 @@
-import { Form, Select } from 'antd'
-import type { ReactNode } from 'react'
-
-type FormSelectSchema = {
-	type: 'select'
-	label: string
-	field: string
-	options: { label: string; value: string }[]
-}
-type FormSchema = FormSelectSchema
-type FormSchemaType = FormSchema['type']
+import { Form } from 'antd'
+import { DynamicForm, type FormSchema } from '../dynamic-form'
 
 export type ScaffoldQueryProps = {
 	schemas: FormSchema[]
-}
-
-function DynamicForm(props: FormSchema) {
-	const { type } = props
-
-	const renderFnMap: Record<FormSchemaType, (schema: FormSchema) => ReactNode> =
-		{
-			select: ({ options }) => {
-				return <Select options={options} />
-			},
-		}
-
-	return renderFnMap[type](props)
 }
 
 export function ScaffoldQuery(props: ScaffoldQueryProps) {
@@ -44,7 +22,6 @@ export function ScaffoldQuery(props: ScaffoldQueryProps) {
 					)
 				})}
 			</Form>
-			scaffold query
 		</div>
 	)
 }

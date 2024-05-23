@@ -1,13 +1,14 @@
+import { Button } from 'antd'
 import { Scaffold } from '~/components/ui/scaffold'
 import { useScaffold } from '~/hooks/use-scaffold'
 
 export default function Users() {
-	const { scaffoldProps } = useScaffold({
+	const { scaffoldProps, setSchema } = useScaffold({
 		queryConfig: {
 			schemas: [
 				{
 					type: 'select',
-					label: 'Username',
+					label: '姓名',
 					field: 'username',
 					options: [{ label: 'test', value: 'test' }],
 				},
@@ -15,5 +16,16 @@ export default function Users() {
 		},
 	})
 
-	return <Scaffold {...scaffoldProps} />
+	const onTest = () => {
+		setSchema('username', {
+			options: [{ label: 'test2', value: 'test2' }],
+		})
+	}
+
+	return (
+		<>
+			<Button onClick={onTest}>test</Button>
+			<Scaffold {...scaffoldProps} />
+		</>
+	)
 }
