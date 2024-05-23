@@ -1,6 +1,7 @@
+import { createLazyFileRoute } from '@tanstack/react-router'
 import { LoginForm } from '~/features/auth/components/LoginForm'
 
-export default function Login() {
+function Login() {
 	return (
 		<div className="h-full w-full flex justify-center items-center">
 			<div className="w-[700px] bg-white flex justify-start items-start">
@@ -14,3 +15,7 @@ export default function Login() {
 		</div>
 	)
 }
+
+export const Route = createLazyFileRoute('/login')({
+	component: Login,
+})

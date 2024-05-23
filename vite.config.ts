@@ -4,5 +4,5 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 import { TanStackRouterVite } from '@tanstack/router-vite-plugin'
 
 export default defineConfig({
-	plugins: [react(), tsconfigPaths(), TanStackRouterVite()],
+	plugins: [TanStackRouterVite(), react(), tsconfigPaths()],
 })

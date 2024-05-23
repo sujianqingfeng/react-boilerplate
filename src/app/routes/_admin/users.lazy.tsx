@@ -1,8 +1,9 @@
+import { createLazyFileRoute } from '@tanstack/react-router'
 import { Button } from 'antd'
 import { Scaffold } from '~/components/ui/scaffold'
 import { useScaffold } from '~/hooks/use-scaffold'
 
-export default function Users() {
+function Users() {
 	const { scaffoldProps, setSchema } = useScaffold({
 		queryConfig: {
 			schemas: [
@@ -29,3 +30,7 @@ export default function Users() {
 		</>
 	)
 }
+
+export const Route = createLazyFileRoute('/_admin/users')({
+	component: Users,
+})

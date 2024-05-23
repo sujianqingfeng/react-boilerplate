@@ -6,7 +6,6 @@
 
 
 
-
-html,body,#app {
+html,body,#root{
   @apply h-full w-full bg-gray-200;
 }
