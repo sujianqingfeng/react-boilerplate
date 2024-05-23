@@ -1,10 +1,10 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useImmer } from 'use-immer'
-import type { FormSchema, FormSelectSchema } from '~/components/ui/dynamic-form'
-import type { ScaffoldQueryProps } from '~/components/ui/scaffold'
+import type { FormSchema } from '~/components/ui/dynamic-form'
+import type { ScaffoldProps } from '~/components/ui/scaffold'
 
 type UseScaffoldOptions = {
-	queryConfig: ScaffoldQueryProps
+	queryConfig: ScaffoldProps['queryConfig']
 }
 
 export function useScaffold(options: UseScaffoldOptions) {

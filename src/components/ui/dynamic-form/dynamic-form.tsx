@@ -1,26 +1,33 @@
 import { Input, Select } from 'antd'
+import { DateRange } from '../date-range'
 
-// type CommonSchema = { label: string; field: string; placeholder?: string }
+type CommonSchema = { label?: string; placeholder?: string }
 
-export type FormSelectSchema = {
+type FormSelectSchema = CommonSchema & {
 	type: 'select'
+	field: string
 	options: { label: string; value: string }[]
-	label: string
-	field: string
-	placeholder?: string
 }
 
-type FormInputSchema = {
+type FormInputSchema = CommonSchema & {
 	type: 'input'
-	label: string
 	field: string
-	placeholder?: string
 }
 
-export type FormSchema = FormSelectSchema | FormInputSchema
+type FormDateRangeSchema = CommonSchema & {
+	type: 'date-range'
+	field: [string, string]
+}
 
-export function DynamicForm(props: FormSchema) {
-	const { type, placeholder, label } = props
+export type FormSchema =
+	| FormSelectSchema
+	| FormInputSchema
+	| FormDateRangeSchema
+
+type DynamicFormProps = FormSchema & { form: Record<string, string> }
+
+export function DynamicForm(props: DynamicFormProps) {
+	const { type, placeholder, label, form } = props
 	switch (type) {
 		case 'input':
 			return <Input placeholder={placeholder || `请输入${label}`} />
@@ -30,8 +37,14 @@ export function DynamicForm(props: FormSchema) {
 				<Select
 					options={props.options}
 					placeholder={placeholder || `请选择${label}`}
+					onChange={(value) => {
+						form[props.field] = value
+					}}
 				/>
 			)
+
+		case 'date-range':
+			return <DateRange />
 
 		default:
 			return <div> unknown type {type} </div>

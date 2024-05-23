@@ -13,6 +13,16 @@ function Users() {
 					field: 'username',
 					options: [{ label: 'test', value: 'test' }],
 				},
+				{
+					type: 'input',
+					label: '年龄',
+					field: 'age',
+				},
+				{
+					type: 'date-range',
+					label: '时间',
+					field: ['start', 'end'],
+				},
 			],
 		},
 	})
