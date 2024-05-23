@@ -4,15 +4,13 @@
 	"sideEffects": false,
 	"type": "module",
 	"scripts": {
-		"build": "remix vite:build",
-		"dev": "remix vite:dev",
+		"dev": "vite",
+		"build": "tsc && vite build",
 		"preview": "vite preview",
 		"typecheck": "tsc"
 	},
 	"dependencies": {
 		"@ant-design/icons": "^5.3.7",
-		"@remix-run/node": "^2.9.2",
-		"@remix-run/react": "^2.9.2",
 		"@sujian/request": "^2.0.7",
 		"@tanstack/react-query": "^5.37.1",
 		"antd": "^5.17.3",
@@ -24,9 +22,11 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.7.3",
-		"@remix-run/dev": "^2.9.2",
+		"@tanstack/router-devtools": "^1.33.7",
+		"@tanstack/router-vite-plugin": "^1.32.17",
 		"@types/react": "^18.2.20",
 		"@types/react-dom": "^18.2.7",
+		"@vitejs/plugin-react": "^4.2.1",
 		"autoprefixer": "^10.4.19",
 		"postcss": "^8.4.38",
 		"tailwindcss": "^3.4.3",
