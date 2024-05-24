@@ -1,5 +1,6 @@
 import { Input, Select } from 'antd'
 import { DateRange } from '../date-range'
+import { useDynamicFormInstance } from './use-dynamic-form'
 
 type CommonSchema = { label?: string; placeholder?: string }
 
@@ -24,27 +25,49 @@ export type FormSchema =
 	| FormInputSchema
 	| FormDateRangeSchema
 
-type DynamicFormProps = FormSchema & { form: Record<string, string> }
+type DynamicFormProps = FormSchema
 
 export function DynamicForm(props: DynamicFormProps) {
-	const { type, placeholder, label, form } = props
+	const { type, placeholder, label, field } = props
+	const formInstance = useDynamicFormInstance()
+
 	switch (type) {
 		case 'input':
-			return <Input placeholder={placeholder || `请输入${label}`} />
+			return (
+				<Input
+					placeholder={placeholder || `请输入${label}`}
+					value={formInstance.getFieldValue(field)}
+					onChange={(value) => {
+						formInstance.setFieldValue(field, value.target.value)
+					}}
+				/>
+			)
 
 		case 'select':
 			return (
 				<Select
 					options={props.options}
 					placeholder={placeholder || `请选择${label}`}
+					value={formInstance.getFieldValue(field)}
 					onChange={(value) => {
-						form[props.field] = value
+						formInstance.setFieldValue(field, value)
 					}}
 				/>
 			)
 
 		case 'date-range':
-			return <DateRange />
+			return (
+				<DateRange
+					start={formInstance.getFieldValue(field[0])}
+					end={formInstance.getFieldValue(field[1])}
+					onChange={({ start, end }) => {
+						formInstance.setFieldsValue({
+							[field[0]]: start,
+							[field[1]]: end,
+						})
+					}}
+				/>
+			)
 
 		default:
 			return <div> unknown type {type} </div>
