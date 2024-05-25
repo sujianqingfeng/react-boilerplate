@@ -1,5 +1,5 @@
-import { Col, Form, Row } from 'antd'
-import type { ColProps } from 'antd'
+import { Button, Col, Form, Row, Space } from 'antd'
+import type { ColProps, FormProps } from 'antd'
 import {
 	DynamicForm,
 	DynamicFormProvider,
@@ -10,13 +10,19 @@ function genKey(field: FormSchema['field']) {
 	return Array.isArray(field) ? field.join('-') : field
 }
 
-export function resolveForm(schemas: FormSchema[]) {
+export function resolveInitialForm(schemas: FormSchema[]) {
 	const keys = schemas.flatMap((schema) => schema.field)
 
 	return keys.reduce<Record<string, string>>((pre, key) => {
 		pre[key] = ''
 		return pre
 	}, {})
+}
+
+function filterHiddenFieldKeys(schemas: FormSchema[]) {
+	return schemas
+		.filter((schema) => Array.isArray(schema.field))
+		.flatMap((schema) => schema.field)
 }
 
 export type ScaffoldQueryProps = {
@@ -26,9 +32,26 @@ export type ScaffoldQueryProps = {
 
 export function ScaffoldQuery(props: ScaffoldQueryProps) {
 	const { schemas, formItemLayout = { span: 6, md: 8, sm: 12 } } = props
-	const formInstance = Form.useFormInstance()
 
-	const initialValues = resolveForm(schemas)
+	const initialValues = resolveInitialForm(schemas)
+	console.log('🚀 ~ ScaffoldQuery ~ initialValues:', initialValues)
+	const [formInstance] = Form.useForm()
+
+	const onValuesChange: FormProps['onValuesChange'] = (
+		changedValues,
+		allValues,
+	) => {
+		console.log('🚀 ~ ScaffoldQuery ~ allValues:', allValues)
+		console.log('🚀 ~ ScaffoldQuery ~ changedValues:', changedValues)
+	}
+
+	const onReset = () => {
+		formInstance.resetFields()
+	}
+
+	const onFinish: FormProps['onFinish'] = (values) => {
+		console.log('🚀 ~ ScaffoldQuery ~ values:', values)
+	}
 
 	return (
 		<DynamicFormProvider formInstance={formInstance}>
@@ -39,18 +62,37 @@ export function ScaffoldQuery(props: ScaffoldQueryProps) {
 					layout="inline"
 					autoComplete="off"
 					initialValues={initialValues}
+					onValuesChange={onValuesChange}
+					onFinish={onFinish}
 				>
 					<Row className="flex-auto">
 						{schemas.map((scheme) => {
 							return (
 								<Col key={genKey(scheme.field)} {...formItemLayout}>
-									<Form.Item name={scheme.field} label={scheme.label}>
+									<Form.Item name={genKey(scheme.field)} label={scheme.label}>
 										<DynamicForm {...scheme} />
 									</Form.Item>
 								</Col>
 							)
 						})}
+
+						<Col span={6}>
+							<Form.Item>
+								<Space>
+									<Button type="primary" htmlType="submit">
+										Submit
+									</Button>
+									<Button htmlType="button" onClick={onReset}>
+										Reset
+									</Button>
+								</Space>
+							</Form.Item>
+						</Col>
 					</Row>
+
+					{filterHiddenFieldKeys(schemas).map((key) => (
+						<Form.Item key={key} name={key} hidden />
+					))}
 				</Form>
 			</div>
 		</DynamicFormProvider>

@@ -61,10 +61,15 @@ export function DynamicForm(props: DynamicFormProps) {
 					start={formInstance.getFieldValue(field[0])}
 					end={formInstance.getFieldValue(field[1])}
 					onChange={({ start, end }) => {
-						formInstance.setFieldsValue({
-							[field[0]]: start,
-							[field[1]]: end,
-						})
+						console.log('🚀 ~ DynamicForm ~ start:', field[0], start)
+						console.log('🚀 ~ DynamicForm ~ end:', field[1], end)
+						// formInstance.setFieldsValue({
+						// 	[field[0]]: start,
+						// 	[field[1]]: end,
+						// })
+
+						formInstance.setFieldValue(field[0], start)
+						formInstance.setFieldValue(field[1], end)
 					}}
 				/>
 			)

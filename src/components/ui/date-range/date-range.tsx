@@ -28,6 +28,7 @@ export function DateRange(props: DateRangeProps) {
 	]
 
 	const rangePickerOnChange: RangePickerProps['onChange'] = (dates) => {
+		console.log('🚀 ~ DateRange ~ dates:', dates)
 		if (!dates) {
 			onChange?.({
 				start: '',
@@ -44,5 +45,5 @@ export function DateRange(props: DateRangeProps) {
 		})
 	}
 
-	return <RangePicker value={value} onChange={rangePickerOnChange} />
+	return <RangePicker defaultValue={value} onChange={rangePickerOnChange} />
 }

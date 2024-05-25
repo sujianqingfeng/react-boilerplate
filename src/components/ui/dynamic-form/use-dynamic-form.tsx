@@ -7,7 +7,9 @@ export function useDynamicFormInstance() {
 	const form = useContext(DynamicFormInstanceContext)
 
 	if (!form) {
-		throw new Error('useDynamicForm must be used within DynamicFormProvider')
+		throw new Error(
+			'useDynamicFormInstance must be used within DynamicFormProvider',
+		)
 	}
 
 	return form
