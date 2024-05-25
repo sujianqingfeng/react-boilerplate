@@ -36,7 +36,7 @@ export function DynamicForm(props: DynamicFormProps) {
 			return (
 				<Input
 					placeholder={placeholder || `请输入${label}`}
-					value={formInstance.getFieldValue(field)}
+					defaultValue={formInstance.getFieldValue(field)}
 					onChange={(value) => {
 						formInstance.setFieldValue(field, value.target.value)
 					}}
@@ -48,31 +48,25 @@ export function DynamicForm(props: DynamicFormProps) {
 				<Select
 					options={props.options}
 					placeholder={placeholder || `请选择${label}`}
-					value={formInstance.getFieldValue(field)}
+					defaultValue={formInstance.getFieldValue(field)}
+					allowClear
 					onChange={(value) => {
 						formInstance.setFieldValue(field, value)
 					}}
 				/>
 			)
 
-		case 'date-range':
+		case 'date-range': {
+			const key = field.join('-')
 			return (
 				<DateRange
-					start={formInstance.getFieldValue(field[0])}
-					end={formInstance.getFieldValue(field[1])}
-					onChange={({ start, end }) => {
-						console.log('🚀 ~ DynamicForm ~ start:', field[0], start)
-						console.log('🚀 ~ DynamicForm ~ end:', field[1], end)
-						// formInstance.setFieldsValue({
-						// 	[field[0]]: start,
-						// 	[field[1]]: end,
-						// })
-
-						formInstance.setFieldValue(field[0], start)
-						formInstance.setFieldValue(field[1], end)
+					defaultValue={formInstance.getFieldValue(key)}
+					onChange={(dates) => {
+						formInstance.setFieldValue(key, dates)
 					}}
 				/>
 			)
+		}
 
 		default:
 			return <div> unknown type {type} </div>

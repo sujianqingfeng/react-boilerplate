@@ -7,10 +7,9 @@ const { RangePicker } = DatePicker
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>
 
 type DateRangeProps = {
-	start?: string
-	end?: string
+	defaultValue?: [string, string]
 	withEndTimeOfDay?: boolean
-	onChange?: (value: { start: string; end: string }) => void
+	onChange?: (dates: [string, string]) => void
 }
 
 function formatTime(time: Dayjs, withEndTimeOfDay: boolean) {
@@ -20,30 +19,36 @@ function formatTime(time: Dayjs, withEndTimeOfDay: boolean) {
 }
 
 export function DateRange(props: DateRangeProps) {
-	const { start, end, onChange, withEndTimeOfDay = true } = props
+	const {
+		defaultValue: [start, end] = [],
+		onChange,
+		withEndTimeOfDay = true,
+	} = props
 
-	const value: RangePickerProps['value'] = [
+	const defaultValue: RangePickerProps['value'] = [
 		start ? dayjs(start) : null,
 		end ? dayjs(end) : null,
 	]
 
 	const rangePickerOnChange: RangePickerProps['onChange'] = (dates) => {
-		console.log('🚀 ~ DateRange ~ dates:', dates)
 		if (!dates) {
-			onChange?.({
-				start: '',
-				end: '',
-			})
+			onChange?.(['', ''])
 			return
 		}
 
 		const [start, end] = dates
 
-		onChange?.({
-			start: start ? formatTime(start, false) : '',
-			end: end ? formatTime(end, withEndTimeOfDay) : '',
-		})
+		onChange?.([
+			start ? formatTime(start, false) : '',
+			end ? formatTime(end, withEndTimeOfDay) : '',
+		])
 	}
 
-	return <RangePicker defaultValue={value} onChange={rangePickerOnChange} />
+	return (
+		<RangePicker
+			placeholder={['开始时间', '结束时间']}
+			defaultValue={defaultValue}
+			onChange={rangePickerOnChange}
+		/>
+	)
 }

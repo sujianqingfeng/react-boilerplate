@@ -6,35 +6,73 @@ import {
 	type FormSchema,
 } from '../dynamic-form'
 
-function genKey(field: FormSchema['field']) {
+function getKey(field: FormSchema['field']) {
 	return Array.isArray(field) ? field.join('-') : field
 }
 
 export function resolveInitialForm(schemas: FormSchema[]) {
-	const keys = schemas.flatMap((schema) => schema.field)
+	return schemas.reduce<Record<string, any>>((pre, { type, field }) => {
+		switch (type) {
+			case 'select':
+				pre[getKey(field)] = null
+				break
 
-	return keys.reduce<Record<string, string>>((pre, key) => {
-		pre[key] = ''
+			default:
+				pre[getKey(field)] = Array.isArray(field) ? [] : ''
+				break
+		}
+
 		return pre
 	}, {})
 }
 
-function filterHiddenFieldKeys(schemas: FormSchema[]) {
-	return schemas
-		.filter((schema) => Array.isArray(schema.field))
-		.flatMap((schema) => schema.field)
+function mapFields(schemas: FormSchema[], values: Record<string, string>) {
+	const result: Record<string, string> = {
+		...values,
+	}
+
+	for (const schema of schemas) {
+		if (Array.isArray(schema.field)) {
+			const { field } = schema
+			const fieldKey = getKey(field)
+
+			field.forEach((key, i) => {
+				result[key] = values[fieldKey][i] || ''
+			})
+
+			delete result[fieldKey]
+		}
+	}
+
+	return result
 }
 
 export type ScaffoldQueryProps = {
 	schemas: FormSchema[]
-	formItemLayout?: ColProps
+	formItemCol?: ColProps
+	action?: {
+		showQueryBt?: boolean
+		showResetBt?: boolean
+		queryBtText?: string
+		resetBtText?: string
+		span?: number
+	}
 }
 
 export function ScaffoldQuery(props: ScaffoldQueryProps) {
-	const { schemas, formItemLayout = { span: 6, md: 8, sm: 12 } } = props
+	const {
+		schemas,
+		formItemCol = { span: 6, md: 6, sm: 8, xs: 12 },
+		action = {
+			showQueryBt: true,
+			showResetBt: true,
+			queryBtText: '查询',
+			resetBtText: '重置',
+			span: 6,
+		},
+	} = props
 
 	const initialValues = resolveInitialForm(schemas)
-	console.log('🚀 ~ ScaffoldQuery ~ initialValues:', initialValues)
 	const [formInstance] = Form.useForm()
 
 	const onValuesChange: FormProps['onValuesChange'] = (
@@ -51,6 +89,8 @@ export function ScaffoldQuery(props: ScaffoldQueryProps) {
 
 	const onFinish: FormProps['onFinish'] = (values) => {
 		console.log('🚀 ~ ScaffoldQuery ~ values:', values)
+		const mappedValues = mapFields(schemas, values)
+		console.log('🚀 ~ ScaffoldQuery ~ mappedValues:', mappedValues)
 	}
 
 	return (
@@ -64,35 +104,38 @@ export function ScaffoldQuery(props: ScaffoldQueryProps) {
 					initialValues={initialValues}
 					onValuesChange={onValuesChange}
 					onFinish={onFinish}
+					labelAlign="left"
+					labelCol={{ span: 4 }}
 				>
 					<Row className="flex-auto">
 						{schemas.map((scheme) => {
 							return (
-								<Col key={genKey(scheme.field)} {...formItemLayout}>
-									<Form.Item name={genKey(scheme.field)} label={scheme.label}>
+								<Col key={getKey(scheme.field)} {...formItemCol}>
+									<Form.Item name={getKey(scheme.field)} label={scheme.label}>
 										<DynamicForm {...scheme} />
 									</Form.Item>
 								</Col>
 							)
 						})}
 
-						<Col span={6}>
+						<Col span={action.span}>
 							<Form.Item>
 								<Space>
-									<Button type="primary" htmlType="submit">
-										Submit
-									</Button>
-									<Button htmlType="button" onClick={onReset}>
-										Reset
-									</Button>
+									{action.showQueryBt && (
+										<Button type="primary" htmlType="submit">
+											{action.queryBtText}
+										</Button>
+									)}
+
+									{action.resetBtText && (
+										<Button htmlType="button" onClick={onReset}>
+											{action.resetBtText}
+										</Button>
+									)}
 								</Space>
 							</Form.Item>
 						</Col>
 					</Row>
-
-					{filterHiddenFieldKeys(schemas).map((key) => (
-						<Form.Item key={key} name={key} hidden />
-					))}
 				</Form>
 			</div>
 		</DynamicFormProvider>
