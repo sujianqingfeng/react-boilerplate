@@ -1,39 +1,45 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useImmer } from 'use-immer'
-import type { FormSchema, FormSelectSchema } from '~/components/ui/dynamic-form'
-import type { ScaffoldQueryProps } from '~/components/ui/scaffold'
+import type { FormSchema } from '~/components/ui/dynamic-form'
+import type {
+	ScaffoldQueryProps,
+	ScaffoldTableProps,
+} from '~/components/ui/scaffold'
 
-type UseScaffoldOptions = {
-  queryConfig: ScaffoldQueryProps
+type UseScaffoldOptions<Resp> = {
+	queryConfig: ScaffoldQueryProps
+	tableConfig: ScaffoldTableProps<Resp>
 }
 
-export function useScaffold(options: UseScaffoldOptions) {
-  // const [queryConfig, setQueryConfig] = useState(options.queryConfig)
-  const [queryConfig, setQueryConfig] = useImmer(options.queryConfig)
+export function useScaffold<Resp>(options: UseScaffoldOptions<Resp>) {
+	// const [queryConfig, setQueryConfig] = useState(options.queryConfig)
+	// const [queryConfig, setQueryConfig] = useImmer(options.queryConfig)
+	// const { tableConfig } = options
 
-  const scaffoldProps = useMemo(
-    () => ({
-      queryConfig,
-    }),
-    [queryConfig],
-  )
+	// const scaffoldProps = useMemo(
+	// 	() => ({
+	// 		queryConfig,
+	// 		tableConfig,
+	// 	}),
+	// 	[queryConfig, tableConfig],
+	// )
 
-  const setSchema = (field: string, schema: Partial<FormSchema>) => {
-    const index = queryConfig.schemas.findIndex(
-      (schema) => schema.field === field,
-    )
+	// const setSchema = (field: string, schema: Partial<FormSchema>) => {
+	// 	const index = queryConfig.schemas.findIndex(
+	// 		(schema) => schema.field === field,
+	// 	)
 
-    if (index === -1) {
-      throw new Error(`schema with field ${field} not found`)
-    }
+	// 	if (index === -1) {
+	// 		throw new Error(`schema with field ${field} not found`)
+	// 	}
 
-    setQueryConfig((draft) => {
-      Object.assign(draft.schemas[index], schema)
-    })
-  }
+	// 	setQueryConfig((draft) => {
+	// 		Object.assign(draft.schemas[index], schema)
+	// 	})
+	// }
 
-  return {
-    scaffoldProps,
-    setSchema,
-  }
+	return {
+		scaffoldProps: options,
+		// setSchema,
+	}
 }

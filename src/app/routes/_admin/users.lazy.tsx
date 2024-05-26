@@ -1,10 +1,10 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
-import { Button } from 'antd'
 import { Scaffold } from '~/components/ui/scaffold'
 import { useScaffold } from '~/hooks/use-scaffold'
+import type { UserResp } from '~/types/api'
 
 function Users() {
-	const { scaffoldProps, setSchema } = useScaffold({
+	const { scaffoldProps } = useScaffold<UserResp>({
 		queryConfig: {
 			schemas: [
 				{
@@ -25,17 +25,17 @@ function Users() {
 				},
 			],
 		},
+		tableConfig: {
+			columns: [
+				{ title: '姓名', dataIndex: 'username', key: 'username' },
+				{ title: '年龄', dataIndex: 'age', key: 'age' },
+			],
+			dataSource: [{ username: 'user', age: 13 }],
+		},
 	})
-
-	const onTest = () => {
-		setSchema('username', {
-			options: [{ label: 'test2', value: 'test2' }],
-		})
-	}
 
 	return (
 		<>
-			<Button onClick={onTest}>test</Button>
 			<Scaffold {...scaffoldProps} />
 		</>
 	)

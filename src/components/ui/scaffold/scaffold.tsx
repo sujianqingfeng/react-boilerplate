@@ -1,18 +1,18 @@
 import { ScaffoldQuery, type ScaffoldQueryProps } from './query'
-import { ScaffoldTable } from './table'
+import { ScaffoldTable, type ScaffoldTableProps } from './table'
 
 export type ScaffoldProps = {
-	queryConfig: Omit<ScaffoldQueryProps, 'form'>
+	queryConfig: ScaffoldQueryProps
+	tableConfig: ScaffoldTableProps
 }
 
 export function Scaffold(props: ScaffoldProps) {
-	const { queryConfig } = props
+	const { queryConfig, tableConfig } = props
 
 	return (
 		<>
 			<ScaffoldQuery {...queryConfig} />
-
-			<ScaffoldTable dataSource={[]} columns={[]} />
+			<ScaffoldTable {...tableConfig} />
 		</>
 	)
 }
