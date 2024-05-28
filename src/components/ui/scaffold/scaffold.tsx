@@ -1,9 +1,9 @@
 import { ScaffoldQuery, type ScaffoldQueryProps } from './query'
 import { ScaffoldTable, type ScaffoldTableProps } from './table'
 
-export type ScaffoldProps = {
+export type ScaffoldProps<T = any> = {
 	queryConfig: ScaffoldQueryProps
-	tableConfig: ScaffoldTableProps
+	tableConfig: ScaffoldTableProps<T>
 }
 
 export function Scaffold(props: ScaffoldProps) {

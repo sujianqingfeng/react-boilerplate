@@ -1,4 +1,5 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
+import { Actions } from '~/components/ui/actions'
 import { Scaffold } from '~/components/ui/scaffold'
 import { useScaffold } from '~/hooks/use-scaffold'
 import type { UserResp } from '~/types/api'
@@ -27,10 +28,29 @@ function Users() {
 		},
 		tableConfig: {
 			columns: [
-				{ title: '姓名', dataIndex: 'username', key: 'username' },
-				{ title: '年龄', dataIndex: 'age', key: 'age' },
+				{ title: '姓名', dataIndex: 'username' },
+				{ title: '年龄', dataIndex: 'age' },
+				{
+					title: '操作',
+					key: 'action',
+					render: (text, record) => {
+						return (
+							<Actions
+								defaultBtClassName="p-0"
+								list={[
+									{ title: '编辑', type: 'link' },
+									{
+										title: '删除',
+										type: 'link',
+										danger: true,
+									},
+								]}
+							/>
+						)
+					},
+				},
 			],
-			dataSource: [{ username: 'user', age: 13 }],
+			dataSource: [{ username: 'user', age: 13, id: 1 }],
 		},
 	})
 

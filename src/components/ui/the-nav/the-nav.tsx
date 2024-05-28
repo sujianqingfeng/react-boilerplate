@@ -1,5 +1,6 @@
 import { Menu } from 'antd'
 import type { MenuProps } from 'antd'
+import { useRouter } from '@tanstack/react-router'
 import * as AntIcons from '@ant-design/icons'
 const { SettingOutlined } = AntIcons
 
@@ -11,6 +12,9 @@ type TheNavProps = {
 
 export function TheNav(props: TheNavProps) {
 	const { collapsed } = props
+
+	const router = useRouter()
+	console.log('🚀 ~ TheNav ~ state:', router.routeTree)
 
 	const onClick: MenuProps['onClick'] = (e) => {
 		console.log('click ', e)
