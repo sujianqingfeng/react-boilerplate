@@ -2,7 +2,8 @@ import { createLazyFileRoute } from '@tanstack/react-router'
 import { Actions } from '~/components/ui/actions'
 import { Scaffold } from '~/components/ui/scaffold'
 import { useScaffold } from '~/hooks/use-scaffold'
-import type { UserResp } from '~/types/api'
+import type { BasePageResp, UserResp } from '~/types/api'
+import { sleep } from '~/utils/basic'
 
 function Users() {
 	const { scaffoldProps } = useScaffold<UserResp>({
@@ -50,7 +51,31 @@ function Users() {
 					},
 				},
 			],
-			dataSource: [{ username: 'user', age: 13, id: 1 }],
+			// dataSource: [{ username: 'user', age: 13, id: 1 }],
+		},
+		requestConfig: {
+			queryKey: ['users'],
+			queryFn: async (params, pagination) => {
+				console.log('🚀 ~ queryFn ~ pagination:', pagination)
+				console.log('🚀 ~ queryFn ~ params:', params)
+
+				await sleep(2000)
+
+				const r: BasePageResp<UserResp[]> = {
+					data: {
+						content: [
+							{
+								username: '1',
+								age: 3,
+								id: 1,
+							},
+						],
+						total: 100,
+					},
+				}
+
+				return r
+			},
 		},
 	})
 

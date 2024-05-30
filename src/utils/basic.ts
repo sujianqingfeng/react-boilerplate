@@ -16,3 +16,9 @@ export const createSafePromise = <R = any, T extends any[] = any[]>(
 		}
 	}
 }
+
+export function sleep(ms: number) {
+	return new Promise((resolve) => {
+		setTimeout(resolve, ms)
+	})
+}

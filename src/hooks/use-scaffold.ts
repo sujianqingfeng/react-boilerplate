@@ -1,17 +1,6 @@
-import { useMemo } from 'react'
-import { useImmer } from 'use-immer'
-import type { FormSchema } from '~/components/ui/dynamic-form'
-import type {
-	ScaffoldQueryProps,
-	ScaffoldTableProps,
-} from '~/components/ui/scaffold'
+import type { ScaffoldProps } from '~/components/ui/scaffold'
 
-type UseScaffoldOptions<Resp> = {
-	queryConfig: ScaffoldQueryProps
-	tableConfig: ScaffoldTableProps<Resp>
-}
-
-export function useScaffold<Resp>(options: UseScaffoldOptions<Resp>) {
+export function useScaffold<Resp>(options: ScaffoldProps<Resp>) {
 	// const [queryConfig, setQueryConfig] = useState(options.queryConfig)
 	// const [queryConfig, setQueryConfig] = useImmer(options.queryConfig)
 	// const { tableConfig } = options

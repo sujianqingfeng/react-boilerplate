@@ -1,6 +1,6 @@
 import { Menu } from 'antd'
 import type { MenuProps } from 'antd'
-import { useRouter } from '@tanstack/react-router'
+import { useRouter, useNavigate } from '@tanstack/react-router'
 import * as AntIcons from '@ant-design/icons'
 const { SettingOutlined } = AntIcons
 
@@ -15,22 +15,24 @@ export function TheNav(props: TheNavProps) {
 
 	const router = useRouter()
 	console.log('🚀 ~ TheNav ~ state:', router.routeTree)
+	const navigate = useNavigate()
 
 	const onClick: MenuProps['onClick'] = (e) => {
-		console.log('click ', e)
+		navigate({
+			to: e.key,
+		})
 	}
 
 	const items: MenuItem[] = [
 		{
-			key: 'sub4',
-			label: 'Navigation Three',
+			key: '/',
+			label: 'Dashboard',
 			icon: <SettingOutlined />,
-			children: [
-				{ key: '9', label: 'Option 9' },
-				{ key: '10', label: 'Option 10' },
-				{ key: '11', label: 'Option 11' },
-				{ key: '12', label: 'Option 12' },
-			],
+		},
+		{
+			key: '/users',
+			label: 'Users',
+			icon: <SettingOutlined />,
 		},
 	]
 
