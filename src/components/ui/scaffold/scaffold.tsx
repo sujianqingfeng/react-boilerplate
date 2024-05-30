@@ -1,8 +1,10 @@
 import { useQuery, type QueryKey } from '@tanstack/react-query'
-import { Form, type TablePaginationConfig } from 'antd'
+import { Form } from 'antd'
+import { useEffect, useState } from 'react'
 import { useImmer } from 'use-immer'
 import type { BasePageResp } from '~/types/api'
 import { ScaffoldProvider } from './hooks/use-scaffold'
+import { ScaffoldOperation, type ScaffoldOperationProps } from './operation'
 import { ScaffoldQuery, type ScaffoldQueryProps } from './query'
 import { ScaffoldTable, type ScaffoldTableProps } from './table'
 import { mapFields } from './utils'
@@ -23,10 +25,11 @@ export type ScaffoldProps<T = any> = {
 		) => Promise<BasePageResp<T[]>>
 		defaultPagination?: Pagination
 	}
+	operationConfig?: ScaffoldOperationProps
 }
 
 export function Scaffold(props: ScaffoldProps) {
-	const { queryConfig, tableConfig, requestConfig } = props
+	const { queryConfig, tableConfig, requestConfig, operationConfig } = props
 	const { schemas } = queryConfig
 
 	const {
@@ -36,12 +39,18 @@ export function Scaffold(props: ScaffoldProps) {
 	} = requestConfig
 
 	const [formInstance] = Form.useForm()
-	const [pagination, updatePagination] = useImmer<TablePaginationConfig>({
+	const [pagination, updatePagination] = useImmer<Pagination>({
 		...defaultPagination,
 	})
 
-	const { data, isLoading } = useQuery({
-		queryKey,
+	const [isFormConnected, setIsFormConnected] = useState(false)
+
+	const { data, isLoading, refetch } = useQuery({
+		queryKey: [
+			...queryKey,
+			pagination,
+			isFormConnected ? formInstance.getFieldsValue() : undefined,
+		],
 		queryFn() {
 			const values = formInstance.getFieldsValue()
 			const params = mapFields(schemas, values)
@@ -53,11 +62,27 @@ export function Scaffold(props: ScaffoldProps) {
 				current: pagination.current!,
 			})
 		},
+		enabled: isFormConnected,
 	})
+
+	useEffect(() => {
+		setIsFormConnected(true)
+	}, [])
+
+	const onQuery = () => {
+		refetch()
+	}
+
+	const onReset = () => {
+		updatePagination((draft) => {
+			draft.current = 1
+		})
+	}
 
 	return (
 		<ScaffoldProvider value={{ formInstance, schemas }}>
-			<ScaffoldQuery {...queryConfig} />
+			<ScaffoldQuery {...queryConfig} onQuery={onQuery} onReset={onReset} />
+			<ScaffoldOperation {...operationConfig} />
 			<ScaffoldTable
 				{...tableConfig}
 				loading={isLoading}

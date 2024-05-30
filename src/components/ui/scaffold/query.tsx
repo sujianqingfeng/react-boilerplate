@@ -1,12 +1,12 @@
+import type { ColProps } from 'antd'
 import { Button, Col, Form, Row, Space } from 'antd'
-import type { ColProps, FormProps } from 'antd'
 import {
 	DynamicForm,
 	DynamicFormProvider,
 	type FormSchema,
 } from '../dynamic-form'
 import { useScaffoldContext } from './hooks/use-scaffold'
-import { getKey, mapFields, resolveInitialForm } from './utils'
+import { getKey, resolveInitialForm } from './utils'
 
 export type ScaffoldQueryProps = {
 	schemas: FormSchema[]
@@ -18,6 +18,8 @@ export type ScaffoldQueryProps = {
 		resetBtText?: string
 		span?: number
 	}
+	onQuery?: () => void
+	onReset?: () => void
 }
 
 export function ScaffoldQuery(props: ScaffoldQueryProps) {
@@ -31,19 +33,12 @@ export function ScaffoldQuery(props: ScaffoldQueryProps) {
 			resetBtText: '重置',
 			span: 6,
 		},
+		onQuery,
+		onReset,
 	} = props
 
 	const initialValues = resolveInitialForm(schemas)
 	const { formInstance } = useScaffoldContext()
-
-	const onReset = () => {
-		formInstance.resetFields()
-	}
-
-	const onFinish: FormProps['onFinish'] = (values) => {
-		const mappedValues = mapFields(schemas, values)
-		console.log('🚀 ~ ScaffoldQuery ~ mappedValues:', mappedValues)
-	}
 
 	return (
 		<DynamicFormProvider formInstance={formInstance}>
@@ -54,11 +49,11 @@ export function ScaffoldQuery(props: ScaffoldQueryProps) {
 					layout="inline"
 					autoComplete="off"
 					initialValues={initialValues}
-					onFinish={onFinish}
+					onFinish={onQuery}
 					labelAlign="left"
 					labelCol={{ span: 4 }}
 				>
-					<Row className="flex-auto">
+					<Row className="flex-auto" gutter={[10, 10]}>
 						{schemas.map((scheme) => {
 							return (
 								<Col key={getKey(scheme.field)} {...formItemCol}>
@@ -79,7 +74,13 @@ export function ScaffoldQuery(props: ScaffoldQueryProps) {
 									)}
 
 									{action.resetBtText && (
-										<Button htmlType="button" onClick={onReset}>
+										<Button
+											htmlType="button"
+											onClick={() => {
+												formInstance.resetFields()
+												onReset?.()
+											}}
+										>
 											{action.resetBtText}
 										</Button>
 									)}

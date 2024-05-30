@@ -32,6 +32,7 @@ export function resolveInitialForm(schemas: FormSchema[]) {
 	return schemas.reduce<Record<string, any>>((pre, { type, field }) => {
 		switch (type) {
 			case 'select':
+			case 'api-select':
 				pre[getKey(field)] = null
 				break
 

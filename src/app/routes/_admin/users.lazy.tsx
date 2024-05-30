@@ -13,7 +13,21 @@ function Users() {
 					type: 'select',
 					label: '姓名',
 					field: 'username',
-					options: [{ label: 'test', value: 'test' }],
+					componentProps: {
+						options: [{ label: 'test', value: 'test' }],
+					},
+				},
+				{
+					type: 'api-select',
+					label: '状态',
+					field: 'status',
+					componentProps: {
+						queryKey: ['users-status'],
+						queryFn: async () => {
+							await sleep(2000)
+							return [{ label: 'test', value: 'test' }]
+						},
+					},
 				},
 				{
 					type: 'input',
@@ -51,7 +65,6 @@ function Users() {
 					},
 				},
 			],
-			// dataSource: [{ username: 'user', age: 13, id: 1 }],
 		},
 		requestConfig: {
 			queryKey: ['users'],
@@ -75,6 +88,11 @@ function Users() {
 				}
 
 				return r
+			},
+		},
+		operationConfig: {
+			actions: {
+				list: [{ title: '新建', type: 'primary' }],
 			},
 		},
 	})
