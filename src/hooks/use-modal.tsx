@@ -1,10 +1,121 @@
-import type { ComponentType, LazyExoticComponent } from 'react'
+import type { ModalProps } from 'antd'
+import { Modal } from 'antd'
+import { render, unmount } from 'rc-util/lib/React/render'
+import {
+	Suspense,
+	useRef,
+	type ForwardRefExoticComponent,
+	type LazyExoticComponent,
+	type RefAttributes,
+} from 'react'
+import { isPromise } from '~/utils/basic'
 
-type UseModalTemplateOptions<T extends ComponentType<any>> = {
-	template: LazyExoticComponent<T>
+export type ModalTemplateShowRef<P = any, R = any> = {
+	show: (params: P) => void
+	onOk?: () => R | Promise<R>
 }
-export function useModalTemplate<T extends ComponentType<any>>(
-	props: UseModalTemplateOptions<T>,
-) {
-	const { template } = props
+
+type ShowModalTemplateOptions<
+	P,
+	R,
+	T extends ModalTemplateShowRef<P, R> = ModalTemplateShowRef<P, R>,
+> = {
+	showParams: Parameters<T['show']>[0]
+	onOk?: (value: {
+		close: () => void
+		result: R
+		update: (props: Pick<ModalProps, 'confirmLoading'>) => void
+	}) => void
+} & Omit<ModalProps, 'onOk' | 'confirmLoading'>
+
+// type A = typeof AddUserModalTemplate
+//   type D = ElementRef<A>
+//   type C = Parameters<D['show']>[number]
+//   type E = ReturnType<NonNullable<D['onOk']>>
+//   type F = E extends Promise<infer R> ? R : E
+
+export function useModalTemplate<
+	P,
+	R,
+	T extends ModalTemplateShowRef<P, R> = ModalTemplateShowRef<P, R>,
+>({
+	template: TemplateComponent,
+}: {
+	template: LazyExoticComponent<ForwardRefExoticComponent<RefAttributes<T>>>
+}) {
+	const modalRef = useRef<T>(null)
+
+	const showModal = (props: ShowModalTemplateOptions<P, R>) => {
+		const { showParams, onOk, ...rest } = props
+		const container = document.createDocumentFragment()
+
+		const modalProps: ModalProps = {
+			...rest,
+			open: true,
+			onOk: async () => {
+				const r = modalRef.current?.onOk?.()
+				if (isPromise(r)) {
+					r.then((result) => {
+						onOk?.({ close, result, update })
+					})
+					return
+				}
+
+				if (r !== undefined) {
+					onOk?.({ close, result: r, update })
+					return
+				}
+
+				close()
+			},
+			afterOpenChange: (open) => {
+				if (open) {
+					modalRef.current?.show(showParams)
+				}
+			},
+			onCancel: (e) => {
+				rest.onCancel?.(e)
+				close()
+			},
+		}
+
+		const renderModal = (props: ModalProps) => {
+			render(
+				<Modal {...props}>
+					<Suspense fallback={<p>loading</p>}>
+						<TemplateComponent ref={modalRef} />
+					</Suspense>
+				</Modal>,
+				container,
+			)
+		}
+
+		const destroy = () => {
+			unmount(container)
+		}
+
+		const close = () => {
+			renderModal({
+				...modalProps,
+				open: false,
+				afterClose: () => {
+					modalProps.afterClose?.()
+					destroy()
+				},
+			})
+		}
+
+		const update = (props: Pick<ModalProps, 'confirmLoading'>) => {
+			renderModal({
+				...modalProps,
+				...props,
+			})
+		}
+
+		renderModal(modalProps)
+	}
+
+	return {
+		showModal,
+	}
 }

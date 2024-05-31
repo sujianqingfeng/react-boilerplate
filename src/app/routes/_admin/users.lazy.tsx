@@ -1,11 +1,22 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
+import { lazy } from 'react'
 import { Actions } from '~/components/ui/actions'
 import { Scaffold } from '~/components/ui/scaffold'
+import type { AddUserModalTemplateShowParams } from '~/features/user/components/add-user-modal-template'
+import { useModalTemplate } from '~/hooks/use-modal'
 import { useScaffold } from '~/hooks/use-scaffold'
 import type { BasePageResp, UserResp } from '~/types/api'
 import { sleep } from '~/utils/basic'
 
 function Users() {
+	const AddUserModalTemplate = lazy(
+		() => import('~/features/user/components/add-user-modal-template'),
+	)
+
+	const { showModal } = useModalTemplate<AddUserModalTemplateShowParams>({
+		template: AddUserModalTemplate,
+	})
+
 	const { scaffoldProps } = useScaffold<UserResp>({
 		queryConfig: {
 			schemas: [
@@ -92,7 +103,26 @@ function Users() {
 		},
 		operationConfig: {
 			actions: {
-				list: [{ title: '新建', type: 'primary' }],
+				list: [
+					{
+						title: '新建',
+						type: 'primary',
+						onClick: () => {
+							showModal({
+								showParams: {
+									bbbb: '123',
+								},
+								onOk({ close, result, update }) {
+									update({
+										confirmLoading: true,
+									})
+									console.log('🚀 ~ onOk ~ result:', result)
+									close()
+								},
+							})
+						},
+					},
+				],
 			},
 		},
 	})
