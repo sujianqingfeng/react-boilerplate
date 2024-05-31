@@ -2,19 +2,16 @@ import { createLazyFileRoute } from '@tanstack/react-router'
 import { lazy } from 'react'
 import { Actions } from '~/components/ui/actions'
 import { Scaffold } from '~/components/ui/scaffold'
-import type { AddUserModalTemplateShowParams } from '~/features/user/components/add-user-modal-template'
 import { useModalTemplate } from '~/hooks/use-modal'
 import { useScaffold } from '~/hooks/use-scaffold'
 import type { BasePageResp, UserResp } from '~/types/api'
 import { sleep } from '~/utils/basic'
 
 function Users() {
-	const AddUserModalTemplate = lazy(
-		() => import('~/features/user/components/add-user-modal-template'),
-	)
-
-	const { showModal } = useModalTemplate<AddUserModalTemplateShowParams>({
-		template: AddUserModalTemplate,
+	const { showModal } = useModalTemplate({
+		template: lazy(
+			() => import('~/features/user/components/add-user-modal-template'),
+		),
 	})
 
 	const { scaffoldProps } = useScaffold<UserResp>({
@@ -110,7 +107,7 @@ function Users() {
 						onClick: () => {
 							showModal({
 								showParams: {
-									bbbb: '123',
+									bbbb: '3333',
 								},
 								onOk({ close, result, update }) {
 									update({

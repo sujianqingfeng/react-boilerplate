@@ -28,22 +28,16 @@ type ShowModalTemplateOptions<
 	}) => void
 } & Omit<ModalProps, 'onOk' | 'confirmLoading'>
 
-// type A = typeof AddUserModalTemplate
-//   type D = ElementRef<A>
-//   type C = Parameters<D['show']>[number]
-//   type E = ReturnType<NonNullable<D['onOk']>>
-//   type F = E extends Promise<infer R> ? R : E
-
-export function useModalTemplate<
-	P,
-	R,
-	T extends ModalTemplateShowRef<P, R> = ModalTemplateShowRef<P, R>,
->({
+export function useModalTemplate<P = any, R = any>({
 	template: TemplateComponent,
 }: {
-	template: LazyExoticComponent<ForwardRefExoticComponent<RefAttributes<T>>>
+	template: LazyExoticComponent<
+		ForwardRefExoticComponent<
+			Omit<any, 'ref'> & RefAttributes<ModalTemplateShowRef<P, R>>
+		>
+	>
 }) {
-	const modalRef = useRef<T>(null)
+	const modalRef = useRef<ModalTemplateShowRef<P, R>>(null)
 
 	const showModal = (props: ShowModalTemplateOptions<P, R>) => {
 		const { showParams, onOk, ...rest } = props
