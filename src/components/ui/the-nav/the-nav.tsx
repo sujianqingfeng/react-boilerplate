@@ -1,4 +1,4 @@
-import { useNavigate, useRouter } from '@tanstack/react-router'
+import { useMatches, useNavigate, useRouter } from '@tanstack/react-router'
 import type { MenuProps } from 'antd'
 import { Menu } from 'antd'
 
@@ -51,6 +51,8 @@ export function TheNav(props: TheNavProps) {
 	}
 
 	const { items } = useAdminMenuItems()
+	const matches = useMatches()
+	const lastMatch = matches[matches.length - 1]
 
 	return (
 		<>
@@ -60,8 +62,7 @@ export function TheNav(props: TheNavProps) {
 
 			<Menu
 				onClick={onClick}
-				defaultSelectedKeys={['1']}
-				defaultOpenKeys={['sub1']}
+				defaultSelectedKeys={[lastMatch.pathname]}
 				mode="inline"
 				items={items}
 			/>
