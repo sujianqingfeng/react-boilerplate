@@ -3,11 +3,11 @@ import { Form } from 'antd'
 import { useEffect, useState } from 'react'
 import { useImmer } from 'use-immer'
 import type { BasePageResp } from '~/types/api'
+import { mapFields } from '../dynamic-form/utils'
 import { ScaffoldProvider } from './hooks/use-scaffold'
 import { ScaffoldOperation, type ScaffoldOperationProps } from './operation'
 import { ScaffoldQuery, type ScaffoldQueryProps } from './query'
 import { ScaffoldTable, type ScaffoldTableProps } from './table'
-import { mapFields } from './utils'
 
 type Pagination = {
 	pageSize?: number

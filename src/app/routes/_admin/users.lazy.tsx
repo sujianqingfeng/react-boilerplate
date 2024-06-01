@@ -106,6 +106,7 @@ function Users() {
 						type: 'primary',
 						onClick: () => {
 							showModal({
+								title: '新建用户',
 								showParams: {
 									bbbb: '3333',
 								},

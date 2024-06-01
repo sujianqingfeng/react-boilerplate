@@ -3,10 +3,11 @@ import { Button, Col, Form, Row, Space } from 'antd'
 import {
 	DynamicForm,
 	DynamicFormProvider,
+	getKey,
+	resolveInitialForm,
 	type FormSchema,
 } from '../dynamic-form'
 import { useScaffoldContext } from './hooks/use-scaffold'
-import { getKey, resolveInitialForm } from './utils'
 
 export type ScaffoldQueryProps = {
 	schemas: FormSchema[]

@@ -1,7 +1,7 @@
 import type { FormInstance } from 'antd'
-import { type ReactNode, createContext, useContext } from 'react'
-import { mapFields } from '../utils'
+import { createContext, useContext, type ReactNode } from 'react'
 import type { FormSchema } from '../../dynamic-form'
+import { mapFields } from '../../dynamic-form/utils'
 
 type ScaffoldContextType = null | {
 	formInstance: FormInstance

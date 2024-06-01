@@ -1,4 +1,4 @@
-import type { FormSchema } from '../dynamic-form'
+import type { FormSchema } from './dynamic-form'
 
 export function getKey(field: FormSchema['field']) {
 	return Array.isArray(field) ? field.join('-') : field
@@ -43,4 +43,17 @@ export function resolveInitialForm(schemas: FormSchema[]) {
 
 		return pre
 	}, {})
+}
+
+export function getPlaceholder(schema: FormSchema) {
+	const { type, placeholder } = schema
+
+	switch (type) {
+		case 'api-select':
+		case 'select':
+			return placeholder || `请选择${schema.label}`
+
+		default:
+			return placeholder || `请输入${schema.label}`
+	}
 }
