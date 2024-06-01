@@ -2,23 +2,14 @@ import { useNavigate, useRouter } from '@tanstack/react-router'
 import type { MenuProps } from 'antd'
 import { Menu } from 'antd'
 
-type MenuItem = Required<MenuProps>['items'][number]
+type MenuItem = Required<MenuProps>['items'][number] & { sort?: number }
 
-type TheNavProps = {
-	collapsed: boolean
+function sortMenuItems(items: MenuItem[]) {
+	return items.sort((a, b) => (a?.sort || 0) - (b?.sort || 0))
 }
 
-export function TheNav(props: TheNavProps) {
-	const { collapsed } = props
-	const navigate = useNavigate()
+function useAdminMenuItems() {
 	const router = useRouter()
-
-	const onClick: MenuProps['onClick'] = (e) => {
-		navigate({
-			to: e.key,
-		})
-	}
-
 	const items: MenuItem[] = []
 	const adminLayout = router.routesById['/_admin']
 	if (adminLayout && Array.isArray(adminLayout.children)) {
@@ -26,7 +17,7 @@ export function TheNav(props: TheNavProps) {
 			const {
 				fullPath,
 				options: {
-					staticData: { title, icon },
+					staticData: { title, icon, sort },
 				},
 			} = child
 			const IconComponent = icon
@@ -34,9 +25,32 @@ export function TheNav(props: TheNavProps) {
 				key: fullPath,
 				label: title,
 				icon: IconComponent ? <IconComponent /> : null,
+				sort,
 			})
 		}
 	}
+
+	const sortedItems = sortMenuItems(items)
+
+	return {
+		items: sortedItems,
+	}
+}
+
+type TheNavProps = {
+	collapsed: boolean
+}
+export function TheNav(props: TheNavProps) {
+	const { collapsed } = props
+	const navigate = useNavigate()
+
+	const onClick: MenuProps['onClick'] = (e) => {
+		navigate({
+			to: e.key,
+		})
+	}
+
+	const { items } = useAdminMenuItems()
 
 	return (
 		<>

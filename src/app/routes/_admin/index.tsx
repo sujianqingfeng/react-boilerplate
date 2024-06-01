@@ -6,5 +6,6 @@ export const Route = createFileRoute('/_admin/')({
 	staticData: {
 		title: 'Dashboard',
 		icon: AntIcons.UserOutlined,
+		sort: 1,
 	},
 })
