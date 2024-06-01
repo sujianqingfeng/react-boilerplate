@@ -1,8 +1,8 @@
 import { Layout } from 'antd'
 import type { ReactNode } from 'react'
 import { useLayout } from '~/hooks/use-layout'
-import { TheHeader } from '../ui/the-header'
 import { TheFooter } from '../ui/the-footer'
+import { TheHeader } from '../ui/the-header'
 import { TheNav } from '../ui/the-nav'
 
 const { Header, Footer, Sider, Content } = Layout
@@ -21,7 +21,7 @@ export function DefaultLayout({ children }: { children: ReactNode }) {
 				</Header>
 				<Content>
 					<div className="p-4 h-full">
-						<div className="bg-white h-full rounded-md">{children}</div>
+						<div className="h-full rounded-md">{children}</div>
 					</div>
 				</Content>
 				<Footer className="p-0">

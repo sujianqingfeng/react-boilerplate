@@ -127,9 +127,9 @@ function Users() {
 	})
 
 	return (
-		<>
+		<div className="h-full bg-white">
 			<Scaffold {...scaffoldProps} />
-		</>
+		</div>
 	)
 }
 
