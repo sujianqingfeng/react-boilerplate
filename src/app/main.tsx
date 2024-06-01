@@ -1,11 +1,11 @@
+import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
-import { RouterProvider, createRouter } from '@tanstack/react-router'
 import './tailwind.css'
 
+import { AppProvider } from './app-provider'
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
-import { AppProvider } from './app-provider'
 
 // Create a new router instance
 const router = createRouter({ routeTree })
@@ -17,7 +17,8 @@ declare module '@tanstack/react-router' {
 	}
 
 	interface StaticDataRouteOption {
-		customData?: string
+		title?: string
+		icon?: React.ForwardRefExoticComponent<any>
 	}
 }
 

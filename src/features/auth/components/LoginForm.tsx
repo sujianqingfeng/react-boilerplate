@@ -1,6 +1,7 @@
-import { Button, Form, Input } from 'antd'
+import { useNavigate } from '@tanstack/react-router'
 import type { FormProps } from 'antd'
-import { User, Lock } from 'lucide-react'
+import { Button, Form, Input } from 'antd'
+import { Lock, User } from 'lucide-react'
 
 type FieldType = {
 	username?: string
@@ -9,8 +10,13 @@ type FieldType = {
 }
 
 export function LoginForm() {
+	const navigate = useNavigate()
+
 	const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
 		console.log('Success:', values)
+		navigate({
+			to: '/',
+		})
 	}
 
 	return (

@@ -1,4 +1,5 @@
-import { createLazyFileRoute } from '@tanstack/react-router'
+import * as AntIcons from '@ant-design/icons'
+import { createFileRoute } from '@tanstack/react-router'
 import { lazy } from 'react'
 import { Actions } from '~/components/ui/actions'
 import { Scaffold } from '~/components/ui/scaffold'
@@ -132,6 +133,10 @@ function Users() {
 	)
 }
 
-export const Route = createLazyFileRoute('/_admin/users')({
+export const Route = createFileRoute('/_admin/users')({
 	component: Users,
+	staticData: {
+		title: 'Users',
+		icon: AntIcons.DashboardOutlined,
+	},
 })

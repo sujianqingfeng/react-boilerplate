@@ -13,14 +13,14 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as AdminIndexImport } from './routes/_admin/index'
+import { Route as AdminUsersImport } from './routes/_admin/users'
 
 // Create Virtual Routes
 
 const LoginLazyImport = createFileRoute('/login')()
 const AboutLazyImport = createFileRoute('/about')()
 const AdminLazyImport = createFileRoute('/_admin')()
-const AdminIndexLazyImport = createFileRoute('/_admin/')()
-const AdminUsersLazyImport = createFileRoute('/_admin/users')()
 
 // Create/Update Routes
 
@@ -39,15 +39,15 @@ const AdminLazyRoute = AdminLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/_admin.lazy').then((d) => d.Route))
 
-const AdminIndexLazyRoute = AdminIndexLazyImport.update({
+const AdminIndexRoute = AdminIndexImport.update({
   path: '/',
   getParentRoute: () => AdminLazyRoute,
-} as any).lazy(() => import('./routes/_admin/index.lazy').then((d) => d.Route))
+} as any)
 
-const AdminUsersLazyRoute = AdminUsersLazyImport.update({
+const AdminUsersRoute = AdminUsersImport.update({
   path: '/users',
   getParentRoute: () => AdminLazyRoute,
-} as any).lazy(() => import('./routes/_admin/users.lazy').then((d) => d.Route))
+} as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -78,14 +78,14 @@ declare module '@tanstack/react-router' {
       id: '/_admin/users'
       path: '/users'
       fullPath: '/users'
-      preLoaderRoute: typeof AdminUsersLazyImport
+      preLoaderRoute: typeof AdminUsersImport
       parentRoute: typeof AdminLazyImport
     }
     '/_admin/': {
       id: '/_admin/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof AdminIndexLazyImport
+      preLoaderRoute: typeof AdminIndexImport
       parentRoute: typeof AdminLazyImport
     }
   }
@@ -95,8 +95,8 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   AdminLazyRoute: AdminLazyRoute.addChildren({
-    AdminUsersLazyRoute,
-    AdminIndexLazyRoute,
+    AdminUsersRoute,
+    AdminIndexRoute,
   }),
   AboutLazyRoute,
   LoginLazyRoute,

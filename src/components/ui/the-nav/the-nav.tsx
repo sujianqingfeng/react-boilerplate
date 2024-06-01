@@ -1,8 +1,6 @@
-import * as AntIcons from '@ant-design/icons'
-import { useNavigate } from '@tanstack/react-router'
+import { useNavigate, useRouter } from '@tanstack/react-router'
 import type { MenuProps } from 'antd'
 import { Menu } from 'antd'
-const { SettingOutlined } = AntIcons
 
 type MenuItem = Required<MenuProps>['items'][number]
 
@@ -13,6 +11,7 @@ type TheNavProps = {
 export function TheNav(props: TheNavProps) {
 	const { collapsed } = props
 	const navigate = useNavigate()
+	const router = useRouter()
 
 	const onClick: MenuProps['onClick'] = (e) => {
 		navigate({
@@ -20,18 +19,24 @@ export function TheNav(props: TheNavProps) {
 		})
 	}
 
-	const items: MenuItem[] = [
-		{
-			key: '/',
-			label: 'Dashboard',
-			icon: <SettingOutlined />,
-		},
-		{
-			key: '/users',
-			label: 'Users',
-			icon: <SettingOutlined />,
-		},
-	]
+	const items: MenuItem[] = []
+	const adminLayout = router.routesById['/_admin']
+	if (adminLayout && Array.isArray(adminLayout.children)) {
+		for (const child of adminLayout.children) {
+			const {
+				fullPath,
+				options: {
+					staticData: { title, icon },
+				},
+			} = child
+			const IconComponent = icon
+			items.push({
+				key: fullPath,
+				label: title,
+				icon: IconComponent ? <IconComponent /> : null,
+			})
+		}
+	}
 
 	return (
 		<>
