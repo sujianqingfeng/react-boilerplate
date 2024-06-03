@@ -7,36 +7,36 @@ function Dashboard() {
 	return (
 		<div className="h-full space-y-4">
 			<div className="flex gap-4">
-				<div className="bg-white flex-auto rounded-md p-4">
+				<div className="main-bg flex-auto rounded-md p-4">
 					<p className="text-lg font-bold">Title</p>
 					<div className="text-4xl">$100</div>
 				</div>
-				<div className="bg-white flex-auto rounded-md p-4">
+				<div className="main-bg flex-auto rounded-md p-4">
 					<p className="text-lg font-bold">Title</p>
 					<div className="text-4xl">$100</div>
 				</div>
-				<div className="bg-white flex-auto rounded-md p-4">
+				<div className="main-bg flex-auto rounded-md p-4">
 					<p className="text-lg font-bold">Title</p>
 					<div className="text-4xl">$100</div>
 				</div>
-				<div className="bg-white flex-auto rounded-md p-4">
+				<div className="main-bg flex-auto rounded-md p-4">
 					<p className="text-lg font-bold">Title</p>
 					<div className="text-4xl">$100</div>
 				</div>
 			</div>
 			<div className="flex gap-4">
-				<div className="bg-white flex-1 rounded-md p-4 flex justify-center items-center">
+				<div className="main-bg flex-1 rounded-md p-4 flex justify-center items-center">
 					<ExamplePieChart />
 				</div>
-				<div className="bg-white flex-1 rounded-md p-4 flex justify-center items-center">
+				<div className="main-bg flex-1 rounded-md p-4 flex justify-center items-center">
 					<ExamplePieChart />
 				</div>
 
-				<div className="bg-white flex-1 rounded-md p-4 flex justify-center items-center">
+				<div className="main-bg flex-1 rounded-md p-4 flex justify-center items-center">
 					<ExamplePieChart />
 				</div>
 			</div>
-			<div className="bg-white p-4 rounded-md">
+			<div className="main-bg p-4 rounded-md">
 				<ExampleLineChart />
 			</div>
 		</div>

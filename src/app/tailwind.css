@@ -2,10 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
-
-
 html,body,#root{
-  @apply h-full w-full bg-gray-200;
+  @apply h-full w-full;
+}
+
+body{
+  @apply bg-gray-200;
+}
+
+@layer components {
+  .main-bg {
+    @apply bg-white dark:bg-[#141414];
+  }
 }

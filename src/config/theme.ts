@@ -1,7 +1,11 @@
 import type { ThemeConfig } from 'antd'
 import { theme as antdTheme } from 'antd'
 
-export const theme: ThemeConfig = {
-	cssVar: true,
-	algorithm: antdTheme.defaultAlgorithm,
+export function getTheme(isDarkMode: boolean): ThemeConfig {
+	return {
+		cssVar: true,
+		algorithm: isDarkMode
+			? antdTheme.darkAlgorithm
+			: antdTheme.defaultAlgorithm,
+	}
 }

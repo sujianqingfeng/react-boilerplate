@@ -1,5 +1,5 @@
 import type { ModalProps } from 'antd'
-import { Modal } from 'antd'
+import { ConfigProvider, Modal } from 'antd'
 import { render, unmount } from 'rc-util/lib/React/render'
 import {
 	Suspense,
@@ -8,6 +8,8 @@ import {
 	type LazyExoticComponent,
 	type RefAttributes,
 } from 'react'
+import { getTheme } from '~/config/theme'
+import { useTheme } from '~/features/theme/hooks/use-theme'
 import { isPromise } from '~/utils/basic'
 
 export type ModalTemplateShowRef<P = any, R = any> = {
@@ -38,6 +40,7 @@ export function useModalTemplate<P = any, R = any>({
 	>
 }) {
 	const modalRef = useRef<ModalTemplateShowRef<P, R>>(null)
+	const { isDarkMode } = useTheme()
 
 	const showModal = (props: ShowModalTemplateOptions<P, R>) => {
 		const { showParams, onOk, ...rest } = props
@@ -75,11 +78,13 @@ export function useModalTemplate<P = any, R = any>({
 
 		const renderModal = (props: ModalProps) => {
 			render(
-				<Modal {...props}>
-					<Suspense fallback={<p>loading</p>}>
-						<TemplateComponent ref={modalRef} />
-					</Suspense>
-				</Modal>,
+				<ConfigProvider theme={getTheme(isDarkMode)}>
+					<Modal {...props}>
+						<Suspense fallback={<p>loading</p>}>
+							<TemplateComponent ref={modalRef} />
+						</Suspense>
+					</Modal>
+				</ConfigProvider>,
 				container,
 			)
 		}

@@ -2,6 +2,7 @@ import * as AntIcons from '@ant-design/icons'
 import { useNavigate } from '@tanstack/react-router'
 import type { MenuProps } from 'antd'
 import { Avatar, Button, Dropdown } from 'antd'
+import { ThemeSwitcher } from '~/features/theme/components/switcher'
 
 const { MenuFoldOutlined, MenuUnfoldOutlined } = AntIcons
 
@@ -19,9 +20,7 @@ type TheHeaderProps = {
 	toggleCollapsed: () => void
 }
 
-export function TheHeader(props: TheHeaderProps) {
-	const { collapsed, toggleCollapsed } = props
-
+export function TheHeader({ collapsed, toggleCollapsed }: TheHeaderProps) {
 	const navigate = useNavigate()
 
 	const items: MenuProps['items'] = [
@@ -45,7 +44,8 @@ export function TheHeader(props: TheHeaderProps) {
 				icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
 				onClick={toggleCollapsed}
 			/>
-			<div>
+			<div className="flex justify-start items-center gap-2">
+				<ThemeSwitcher />
 				<Dropdown menu={{ items }}>
 					<Avatar>U</Avatar>
 				</Dropdown>

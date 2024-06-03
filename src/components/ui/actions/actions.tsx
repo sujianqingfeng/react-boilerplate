@@ -1,5 +1,5 @@
-import { Button, Space } from 'antd'
 import type { ButtonProps } from 'antd'
+import { Button, Space } from 'antd'
 
 type ListItem = ButtonProps & {
 	title: string
@@ -12,9 +12,11 @@ export type ActionsProps = {
 	list: ListItem[]
 }
 
-export function Actions(props: ActionsProps) {
-	const { list, spaceSize = 12, defaultBtClassName } = props
-
+export function Actions({
+	list,
+	spaceSize = 12,
+	defaultBtClassName,
+}: ActionsProps) {
 	const showList = list.filter((item) => item.show?.() ?? true)
 
 	return (

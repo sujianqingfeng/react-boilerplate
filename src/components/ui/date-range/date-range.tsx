@@ -1,6 +1,6 @@
+import type { GetProps } from 'antd'
 import { DatePicker } from 'antd'
 import dayjs, { type Dayjs } from 'dayjs'
-import type { GetProps } from 'antd'
 
 const { RangePicker } = DatePicker
 
@@ -18,13 +18,11 @@ function formatTime(time: Dayjs, withEndTimeOfDay: boolean) {
 		: time.format('YYYY-MM-DD HH:mm:ss')
 }
 
-export function DateRange(props: DateRangeProps) {
-	const {
-		defaultValue: [start, end] = [],
-		onChange,
-		withEndTimeOfDay = true,
-	} = props
-
+export function DateRange({
+	defaultValue: [start, end] = ['', ''],
+	onChange,
+	withEndTimeOfDay = true,
+}: DateRangeProps) {
 	const defaultValue: RangePickerProps['value'] = [
 		start ? dayjs(start) : null,
 		end ? dayjs(end) : null,

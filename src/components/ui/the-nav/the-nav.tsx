@@ -40,8 +40,7 @@ function useAdminMenuItems() {
 type TheNavProps = {
 	collapsed: boolean
 }
-export function TheNav(props: TheNavProps) {
-	const { collapsed } = props
+export function TheNav({ collapsed }: TheNavProps) {
 	const navigate = useNavigate()
 
 	const onClick: MenuProps['onClick'] = (e) => {

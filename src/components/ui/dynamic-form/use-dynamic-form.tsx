@@ -1,5 +1,5 @@
-import { type ReactNode, createContext, useContext } from 'react'
 import type { FormInstance } from 'antd'
+import { createContext, useContext, type ReactNode } from 'react'
 
 const DynamicFormInstanceContext = createContext<null | FormInstance>(null)
 
@@ -20,9 +20,10 @@ type DynamicFormProviderProps = {
 	formInstance: FormInstance
 }
 
-export function DynamicFormProvider(props: DynamicFormProviderProps) {
-	const { children, formInstance } = props
-
+export function DynamicFormProvider({
+	children,
+	formInstance,
+}: DynamicFormProviderProps) {
 	return (
 		<DynamicFormInstanceContext.Provider value={formInstance}>
 			{children}

@@ -11,9 +11,12 @@ export type ApiSelectProps<T = Record<string, any>> = {
 	queryFn: QueryFunction<T[]>
 } & Omit<SelectProps, 'options'>
 
-export function ApiSelect(props: ApiSelectProps) {
-	const { queryKey, queryFn, fieldNames = {}, ...rest } = props
-
+export function ApiSelect({
+	queryKey,
+	queryFn,
+	fieldNames = {},
+	...rest
+}: ApiSelectProps) {
 	const { data, isLoading } = useQuery({
 		queryKey,
 		queryFn,

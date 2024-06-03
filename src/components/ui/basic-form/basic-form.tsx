@@ -15,9 +15,7 @@ export type BasicFormProps = {
 }
 
 export const BasicForm = forwardRef(
-	(props: BasicFormProps, ref: Ref<BasicFormRef>) => {
-		const { schemas } = props
-
+	({ schemas }: BasicFormProps, ref: Ref<BasicFormRef>) => {
 		const initialValues = resolveInitialForm(schemas)
 		const [formInstance] = Form.useForm()
 

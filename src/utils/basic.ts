@@ -26,3 +26,7 @@ export function sleep(ms: number) {
 export function isPromise(obj: any): obj is Promise<any> {
 	return !!obj && typeof obj.then === 'function'
 }
+
+export function isSystemDarkMode() {
+	return window.matchMedia?.('(prefers-color-scheme: dark)').matches
+}

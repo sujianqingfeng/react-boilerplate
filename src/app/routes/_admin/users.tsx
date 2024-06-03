@@ -57,7 +57,7 @@ function Users() {
 				{
 					title: '操作',
 					key: 'action',
-					render: (text, record) => {
+					render: () => {
 						return (
 							<Actions
 								defaultBtClassName="p-0"
@@ -127,7 +127,7 @@ function Users() {
 	})
 
 	return (
-		<div className="h-full bg-white">
+		<div className="h-full main-bg">
 			<Scaffold {...scaffoldProps} />
 		</div>
 	)

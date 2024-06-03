@@ -16,12 +16,12 @@ export function DefaultLayout({ children }: { children: ReactNode }) {
 				<TheNav collapsed={collapsed} />
 			</Sider>
 			<Layout>
-				<Header className="bg-white px-0 h-12">
+				<Header className="main-bg px-0 h-12">
 					<TheHeader collapsed={collapsed} toggleCollapsed={toggleCollapsed} />
 				</Header>
 				<Content>
 					<div className="p-4 h-full">
-						<div className="h-full rounded-md">{children}</div>
+						<div className="h-full rounded-md overflow-y-auto">{children}</div>
 					</div>
 				</Content>
 				<Footer className="p-0">
