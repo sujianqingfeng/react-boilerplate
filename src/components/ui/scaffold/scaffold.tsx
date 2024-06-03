@@ -22,7 +22,7 @@ export type ScaffoldProps<T = any> = {
 		queryFn: (
 			params: Record<string, any>,
 			pagination: Required<Pagination>,
-		) => Promise<BasePageResp<T[]>>
+		) => Promise<BasePageResp<T>>
 		defaultPagination?: Pagination
 	}
 	operationConfig?: ScaffoldOperationProps

@@ -83,7 +83,7 @@ function Users() {
 
 				await sleep(2000)
 
-				const r: BasePageResp<UserResp[]> = {
+				const r: BasePageResp<UserResp> = {
 					data: {
 						content: [
 							{
